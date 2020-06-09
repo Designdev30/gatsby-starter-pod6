@@ -3,6 +3,9 @@
 const log = (i) => console.log(JSON.stringify(i, null,2))
 const fs = require('fs')
 const glob = require('glob')
+const isDateInFuture = ( dateString ) => {
+  return (new Date).getTime() < ( new Date( dateString ) ).getTime()
+}
 let allItems = glob.sync('./pub.all/*config.json').map(f=>{
     console.log('process ' + f)
     const desc = fs.readFileSync(f)
@@ -11,10 +14,10 @@ let allItems = glob.sync('./pub.all/*config.json').map(f=>{
     return {f, attrs}
 }).sort( (a ,b) => new Date(a.attrs.PUBDATE) - new Date(b.attrs.PUBDATE) )
 
-// get not pages documents
-let notPages = allItems.filter( a => !a.attrs.publishUrl)
+// get not "pages" ( check if it have pubdate)
+let notPages = allItems.filter( a => !a.attrs.publishUrl).filter(a=>!!a.attrs.PUBDATE).filter(a => !isDateInFuture( a.attrs.PUBDATE ))
 
-let Pages = allItems.filter( a => a.attrs.publishUrl).map(i=>i.attrs)
+let Pages = allItems.filter( a => a.attrs.publishUrl).filter(a => !( a.attrs.PUBDATE && isDateInFuture( a.attrs.PUBDATE ))).map(i=>i.attrs)
 // now we add base60 letters
 const translit = require('iso_9')
 const base60 = require('newbase60')
