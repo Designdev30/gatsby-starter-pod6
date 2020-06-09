@@ -46,10 +46,10 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",
     "serve": "GATSBY_TELEMETRY_DISABLED=1 gatsby serve",
-    "clean": "GATSBY_TELEMETRY_DISABLED=1 gatsby clean; make clean; rm -rf publish/.cache publish/public now.json",
+    "clean": "GATSBY_TELEMETRY_DISABLED=1 gatsby clean; make clean; rm -rf publish/.cache publish/public now.json control.json",
     "now.json": "node bin/makeNow.js",
     "rss": "node ./bin/make-rss.js > public/rss.xml",
-    "export": "yarn clean && make -j2 &&  yarn now.json && GATSBY_TELEMETRY_DISABLED=1 gatsby build && yarn rss && mkdir -p publish && cp -Rp .cache public package.json publish",
+    "export": "yarn clean && make -j2 &&  yarn now.json && GATSBY_TELEMETRY_DISABLED=1 gatsby build && yarn rss &&  cp -Rp control.json public && mkdir -p publish && cp -Rp .cache public package.json publish",
     "test": "make test"
   },
   "repository": {

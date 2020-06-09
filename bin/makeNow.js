@@ -89,6 +89,12 @@ fullInfo.map(item=>{
 })
 // !!! fs.writeFileSync('now.json', JSON.stringify({redirects}, null,2))
 fs.writeFileSync('pub.all/index.json', JSON.stringify({all : [...fullInfo,...Pages]}, null,2))
+// save additional info
+const nextPublishTime = allItems
+                  .filter(a=>!!a.attrs.PUBDATE)
+                  .filter(a => isDateInFuture( a.attrs.PUBDATE ))
+                  .sort( (a ,b) => new Date(a.attrs.PUBDATE) - new Date(b.attrs.PUBDATE) )[0] || {attrs:{}}
+fs.writeFileSync('control.json', JSON.stringify({ 'nextPublishTime': nextPublishTime.attrs.PUBDATE }, null))
 
 /**
   
