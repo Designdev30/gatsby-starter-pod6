@@ -68,7 +68,7 @@ exports.createPages = async ({ actions, graphql }) => {
     const getPublicUrl = async ( src,p1  ) => {
       const result = await graphql(`
       {
-        file( absolutePath: {regex: "${p1}$/"}) {
+        file( absolutePath: {regex: "/${p1}$/"}) {
           publicURL
         }
       }
