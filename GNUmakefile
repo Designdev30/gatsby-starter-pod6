@@ -3,9 +3,12 @@
 #*************************
 FIND= find
 SRCDIR ?=./pub/
-DOCDIR=$(SRCDIR)
+EXTRACTDIR= $(SRCDIR)/extract
+DOCDIR ?=$(SRCDIR)
 POD6DOC=./bin/pod6json
 POD6JS=node ./bin/pod6js
+POD6EXTRACT=node ./bin/extract-notes.js
+
 DSTDIR ?=./pub.all
 
 # ****************************************************************
@@ -14,7 +17,7 @@ DSTDIR ?=./pub.all
 # ****************************************************************
 
 # the sourcefiles
-PODFILES = $(shell ${FIND} ${DOCDIR} -iname '*.pod6' -or -iname '*.pod' 2>/dev/null)
+PODFILES = $(shell ${FIND} ${DOCDIR} -iname '*.pod6' -or -iname '*.pod6' 2>/dev/null)
 SRCFILES = $(PODFILES)
 
 #JS_TARGETS = $(addsuffix .config.js, $(basename $(notdir $(SRCFILES))))
@@ -41,6 +44,15 @@ $(JS_TARGETS):
 	@echo TARGET BASE: ${SRC_PATH} // ${DST_PATH} $@ ${SRC} ${DST_JSPATH}
 	$(POD6JS) --doctype json --jsreact=${DST_JSPATH} --images_prefix ${SRC_PATH} < ${SRC} >${DST_PATH} 
 
+
+extract-items.done:  $(EXTRACTDIR)
+	@echo EXTARCT PUBLISHED ITEMS into $(EXTRACTDIR)
+	echo  $(SRCFILES) | xargs -P 1 -n 1 sh -c '$(POD6EXTRACT) -f $$0 -d $(EXTRACTDIR)'
+	touch $@ 
+
+$(EXTRACTDIR):
+	-@mkdir -p $@ > /dev/null 2>&1
+
 book_preface.xml:
 	@echo TARGET BASE: ${BASE} ${ORIG}
 	$(POD6DOC) -doctype preface ${ORIG} > $@ 
@@ -52,4 +64,4 @@ $(TEST_TARGETS):
 	$(POD6DOC) --doctype js --images_prefix ${SRC_PATH} < ${SRC} >/dev/null
 
 clean: 
-	$(RM)  $(DSTDIR)/*.bak $(DSTDIR)/*.js $(DSTDIR)/*.xml $(DSTDIR)/*.json
+	$(RM) -rf $(DSTDIR)/*.bak $(DSTDIR)/*.js $(DSTDIR)/*.xml $(DSTDIR)/*.json extract-items.done $(EXTRACTDIR)

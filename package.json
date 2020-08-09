@@ -6,6 +6,7 @@
   "author": "Alex Zahatski <me.send@zag.ru>",
   "dependencies": {
     "autoprefixer": "^9.7.3",
+    "commander": "^6.0.0",
     "gatsby": "^2.18.4",
     "gatsby-image": "^2.2.34",
     "gatsby-plugin-catch-links": "^2.1.21",
@@ -37,7 +38,8 @@
     "yargs": "^15.3.1"
   },
   "keywords": [
-    "gatsby", "pod6"
+    "gatsby",
+    "pod6"
   ],
   "license": "MIT",
   "scripts": {
@@ -49,7 +51,7 @@
     "clean": "GATSBY_TELEMETRY_DISABLED=1 gatsby clean; make clean; rm -rf publish/.cache publish/public now.json control.json",
     "now.json": "node bin/makeNow.js",
     "rss": "node ./bin/make-rss.js > public/rss.xml",
-    "export": "yarn clean && make -j2 &&  yarn now.json && GATSBY_TELEMETRY_DISABLED=1 gatsby build && yarn rss &&  cp -Rp control.json public && mkdir -p publish && cp -Rp .cache public package.json publish",
+    "export": "yarn clean && make extract-items.done && make -j2 &&  yarn now.json && GATSBY_TELEMETRY_DISABLED=1 gatsby build && yarn rss &&  cp -Rp control.json public && mkdir -p publish && cp -Rp .cache public package.json publish",
     "test": "make test"
   },
   "repository": {
