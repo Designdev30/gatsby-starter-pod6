@@ -12,7 +12,7 @@ let allItems = glob.sync('./pub.all/*config.json').map(f=>{
     const attrs = JSON.parse(desc.toString())
     console.log('process ' + f + ' done')
     return {f, attrs}
-}).sort( (a ,b) => new Date(a.attrs.PUBDATE) - new Date(b.attrs.PUBDATE) )
+}).filter(i=>i.attrs.PUBDATE).sort( (a ,b) => new Date(a.attrs.PUBDATE) - new Date(b.attrs.PUBDATE) )
 
 // get not "pages" ( check if it have pubdate)
 let notPages = allItems.filter( a => !a.attrs.publishUrl).filter(a=>!!a.attrs.PUBDATE).filter(a => !isDateInFuture( a.attrs.PUBDATE ))
