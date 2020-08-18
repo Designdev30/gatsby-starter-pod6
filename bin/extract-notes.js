@@ -39,6 +39,10 @@ const getNotes = ( opt ) => toAny().use(
                 && 
               config.exists('pubdate')) {
             const note =`=begin pod :type('note') :pubdate('${config.getFirstValue('pubdate')}')
+=begin DESCRIPTION
+${node.text}
+=end DESCRIPTION
+
 ${node.text}
 =end pod` 
             notes.push(note)
