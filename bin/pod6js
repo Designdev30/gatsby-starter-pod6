@@ -8,6 +8,7 @@
 const log = (a) => JSON.stringify(a,null,2)
 const argv = require('yargs').argv
 const fs = require('fs')
+const path = require('path')
 const makeAttrs = require('pod6/src/helpers/config').makeAttrs
 const wrapContent = require('pod6/src/helpers/handlers').wrapContent
 const { subUse, setFn } = require('pod6/src/helpers/handlers')
@@ -17,7 +18,9 @@ let filename = process.argv[2]
 let src = fs.readFileSync(0, 'utf-8');
 const { toHtml }  = require('pod6')
 
+
 let IMAGES = []
+let VIDEOFILESLOCAL = [] 
 let DATA = {}
 const processCode = subUse({
     // inside code don't wrap into <p>
@@ -137,12 +140,23 @@ util.inherits(WriterReact, writerHtml)
     // console.log(log(node.content))
     // get image addr
     const addr = node.content[0].value
+    addr
+    /*
+    import Video from '../pub/posts/openScreen.mp4'
+
+    <div class="video shadow"> <video controls> <source src={Video} type="video/mp4" /> </video></div>
+    */
     if ( addr ) {
     // clean up addr
 
     const filename = addr.replace(/\s+/g,'')
-    IMAGES.push(filename)
-    writer.writeRaw(`{Image().t${IMAGES.length-1}}`)
+    if (filename.match(/mp4$/)) {
+      VIDEOFILESLOCAL.push(filename)
+      writer.writeRaw(`<div class="video shadow"> <video controls> <source src={Video${VIDEOFILESLOCAL.length-1}} type="video/mp4" /> </video></div>`)
+    } else {
+      IMAGES.push(filename)
+      writer.writeRaw(`{Image().t${IMAGES.length-1}}`)
+    }
     }
  }
 })
@@ -164,6 +178,7 @@ const result = {
     src,
     PUBDATE:DATA.pubdate,
     IMAGES,
+    VIDEOFILESLOCAL,
     publishUrl:DATA.publishUrl||null,
     images_prefix: (argv.images_prefix||'').replace(/\/$/g,''),
     jsreact: argv.jsreact,
@@ -221,6 +236,16 @@ if (result.IMAGES.length > 0  ) {
   }
 `
 }
+let videoLocalImports = ''
+if (result.VIDEOFILESLOCAL.length > 0  ) {
+  const images_prefix = (result.images_prefix || '').replace(/(\/)+/g,'\/')
+  videoLocalImports = result.VIDEOFILESLOCAL.map((image,index)=>{
+    const fullpath = "./" + path.join(images_prefix, image);
+    const relPath = path.relative(path.parse(result.jsreact).dir, fullpath)
+    return `
+import Video${index} from '${relPath}'`}).join("\n")
+  videoLocalImports
+}
 // Video
 // <Video width="958" height="539" src="https://www.youtube.com/embed/GqmLCMiUrdo" title="Title of the video "/>
 const VideoComponent = `const Video = ({ src, title, ...props }) => (
@@ -250,6 +275,8 @@ import Post from "../src/components/Post"
 import { useSiteMetadata } from '../src/hooks'
 
 import SEO from "../src/components/seo"
+${videoLocalImports}
+
 ${ DATA.isVideoExists ? VideoComponent : ''}
 ${imagesJs}
 const postTitle = \`${result.TITLE}\`
