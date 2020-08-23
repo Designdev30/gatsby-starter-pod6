@@ -29,7 +29,7 @@ const Feed = ({ items }) => (
         <Link className={styles['feed__item-readmore']} to={item.publishUrl}>{'..>>'}</Link> }
         <div className={styles['feed__item-footer']}>
           <span  className={styles['feed__item-footer-time']}>
-            <Link className={styles['feed__item-footer-time-link']} to={item.publishUrl}>{ moment(item.PUBDATE).format('h:mm on YYYY-MM-DD') }</Link> 
+            <Link className={styles['feed__item-footer-time-link']} to={item.publishUrl}>{ moment(item.PUBDATE).format('H:mm on YYYY-MM-DD') }</Link> 
           </span>
         </div>
         
