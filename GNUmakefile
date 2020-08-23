@@ -47,7 +47,7 @@ $(JS_TARGETS):
 
 extract-items.done:  $(EXTRACTDIR)
 	@echo EXTARCT PUBLISHED ITEMS into $(EXTRACTDIR)
-	echo  $(SRCFILES) | xargs -P 1 -n 1 sh -c '$(POD6EXTRACT) -f $$0 -d $(EXTRACTDIR)'
+	echo  $(SRCFILES) | xargs -P 1 -n 1 sh -c '$(POD6EXTRACT) -f $$0'
 	touch $@ 
 
 $(EXTRACTDIR):

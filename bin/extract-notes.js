@@ -185,14 +185,14 @@ console.log(`Found notes: ${notes.length}, articles: ${articles.length}`)
 
 for (let i =0; i < notes.length;i++) {
     const fileName = `${filenamePrefix}-${name}.n${i+1}${ext}`
-    const outputFileName  = path.join(program.dir, fileName)
+    const outputFileName  = path.join(program.dir || dir, fileName)
     console.log(`Writing ${outputFileName}`)
     fs.writeFileSync( outputFileName , notes[i], 'utf8')
 }
 
 for (let i =0; i < articles.length;i++) {
     const fileName = `${filenamePrefix}-${name}.p${i+1}${ext}`
-    const outputFileName  = path.join(program.dir, fileName)
+    const outputFileName  = path.join(program.dir || dir, fileName)
     console.log(`Writing ${outputFileName}`)
     fs.writeFileSync( outputFileName , articles[i], 'utf8')
 }
