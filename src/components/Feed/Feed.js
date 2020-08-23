@@ -24,10 +24,15 @@ const Feed = ({ items }) => (
             <Link to={item.publishUrl} className={styles['feed__item-meta-category-link']}>{item.publishUrl}</Link>
           </span> 
         </div> */}
-
         <div className={styles['feed__item-description']} dangerouslySetInnerHTML={{ __html: item.DESCR }} />
         { item.type !== 'n'  &&
         <Link className={styles['feed__item-readmore']} to={item.publishUrl}>{'..>>'}</Link> }
+        <div className={styles['feed__item-footer']}>
+          <span  className={styles['feed__item-footer-time']}>
+            <Link className={styles['feed__item-footer-time-link']} to={item.publishUrl}>{ moment(item.PUBDATE).format('h:mm on YYYY-MM-DD') }</Link> 
+          </span>
+        </div>
+        
       </div>
     ))}
   </div>

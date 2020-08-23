@@ -187,8 +187,13 @@ figcaption {
   background: white;
   border-radius: 5px;
 }
+.video {
+  max-width: 90%;
+  margin: 0 auto;
+}
 
 div.video video{
+  width: 100%;
 outline: none;
 border: none;
 }
