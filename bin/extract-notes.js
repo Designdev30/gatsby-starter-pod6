@@ -33,6 +33,11 @@ let notes = []
 const getNotes = ( opt ) => toAny().use(
     '*', ( writer, processor ) => ( node, ctx, interator ) => {
          const config = makeAttrs(node, ctx);
+         if ( node.name === 'pod' ) {
+             // for =pod do recursive search
+             interator(node.content, ctx)
+             return 
+         }
         if ( !node.level  // skip headers
                 &&
             node.name !== 'pod'   // skip =pod block
