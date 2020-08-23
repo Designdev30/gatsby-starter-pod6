@@ -10,8 +10,8 @@ const argv = require('yargs').argv
 const fs = require('fs')
 const path = require('path')
 const makeAttrs = require('pod6/src/helpers/config').makeAttrs
-const wrapContent = require('pod6/src/helpers/handlers').wrapContent
-const { subUse, setFn } = require('pod6/src/helpers/handlers')
+// const wrapContent = require('pod6/src/helpers/handlers').wrapContent
+const { subUse, setFn, wrapContent } = require('pod6/src/helpers/handlers')
 
 
 let filename = process.argv[2]
@@ -64,9 +64,9 @@ const handlersHtml = {
     // console.log( log(conf.asHash()))
     node.content && interator(node.content, ctx)
 },
-'code': processCode,
-':code': processCode,
-':text':processText,
+':code': wrapContent('<pre><code>', '</code></pre>'),
+'code': wrapContent('<pre><code>', '</code></pre>'),
+
 
 
 
@@ -87,9 +87,13 @@ const handlersHtml = {
     const addr = node.content[0].value
     if ( addr ) {
     // clean up addr
-
+      
     const filename = addr.replace(/\s+/g,'')
-    writer.writeRaw(`<img src="${filename}"/>`)
+    if (filename.match(/mp4$/)) {
+      writer.writeRaw(`<div class="video shadow"> <video controls> <source src="${filename}" type="video/mp4" /> </video></div>`)
+    } else {
+      writer.writeRaw(`<img src="${filename}"/>`)
+    }
     }
    
 },
@@ -134,32 +138,34 @@ util.inherits(WriterReact, writerHtml)
     'DESCRIPTION':( writer, processor ) => ( node, ctx, interator ) => {
     const r = toHtml().use({...handlersHtml}).run(node.content)
     DATA.DESCR = r.toString()
-//    console.log(log(node))
-},
-'Image:namedBlock': ( writer, processor ) => ( node, ctx, interator ) => {
-    // console.log(log(node.content))
-    // get image addr
-    const addr = node.content[0].value
-    addr
-    /*
-    import Video from '../pub/posts/openScreen.mp4'
+    },
+    'Image:namedBlock': ( writer, processor ) => ( node, ctx, interator ) => {
+        // console.log(log(node.content))
+        // get image addr
+        const addr = node.content[0].value
+        addr
+        /*
+        import Video from '../pub/posts/openScreen.mp4'
 
-    <div class="video shadow"> <video controls> <source src={Video} type="video/mp4" /> </video></div>
-    */
-    if ( addr ) {
-    // clean up addr
+        <div class="video shadow"> <video controls> <source src={Video} type="video/mp4" /> </video></div>
+        */
+        if ( addr ) {
+        // clean up addr
 
-    const filename = addr.replace(/\s+/g,'')
-    if (filename.match(/mp4$/)) {
-      VIDEOFILESLOCAL.push(filename)
-      writer.writeRaw(`<div class="video shadow"> <video controls> <source src={Video${VIDEOFILESLOCAL.length-1}} type="video/mp4" /> </video></div>`)
-    } else {
-      IMAGES.push(filename)
-      writer.writeRaw(`{Image().t${IMAGES.length-1}}`)
-    }
-    }
- }
-})
+        const filename = addr.replace(/\s+/g,'')
+        if (filename.match(/mp4$/)) {
+          VIDEOFILESLOCAL.push(filename)
+          writer.writeRaw(`<div class="video shadow"> <video controls> <source src={Video${VIDEOFILESLOCAL.length-1}} type="video/mp4" /> </video></div>`)
+        } else {
+          IMAGES.push(filename)
+          writer.writeRaw(`{Image().t${IMAGES.length-1}}`)
+        }
+        }
+    },
+    'code': processCode,
+    ':code': processCode,
+    ':text':processText,
+    })
 
 const res = finalExporter.run(src)
 //console.log(res.errors)
@@ -281,11 +287,12 @@ ${ DATA.isVideoExists ? VideoComponent : ''}
 ${imagesJs}
 const postTitle = \`${result.TITLE}\`
 
-const SecondPage = () => {
+const SecondPage = ({pageContext}) => {
   const { title: siteTitle, subtitle: siteSubtitle } = useSiteMetadata();
+  const { item } = pageContext
   return <Layout title={\`\${postTitle} - \${siteTitle}\`} ${socialImage}>
     <SEO title={postTitle} />
-    <Post title={postTitle} >
+    <Post PUBDATE={item.PUBDATE} title={postTitle} >
     ${result.html}
     </Post>
   </Layout>

@@ -2,9 +2,10 @@
 import React from 'react';
 import { Link } from 'gatsby';
 import Author from './Author';
+import conf from '../../../config';
 // import Comments from './Comments';
 import Content from './Content';
-// import Meta from './Meta';
+import Meta from './Meta';
 // import Tags from './Tags';
 import styles from './Post.module.scss';
 // import type { Node } from '../../types';
@@ -13,11 +14,11 @@ import styles from './Post.module.scss';
 //   post: Node
 // };
 
-const Post = ({ children, title = 'TITELE' }) => {
+const Post = ({ children, title = 'TITLE', PUBDATE, publishUrl }) => {
+  // const  =  args
   // const { html } = post;
   // const { tagSlugs, slug } = post.fields;
   // const { tags, title, date } = post.frontmatter;
-
   return (
     <div className={styles['post']}>
 
@@ -26,8 +27,9 @@ const Post = ({ children, title = 'TITELE' }) => {
       </div>
 
       <div className={styles['post__footer']}>
-        {/* <Meta date={date} />
-        {tags && tagSlugs && <Tags tags={tags} tagSlugs={tagSlugs} />} */}
+        
+        <Meta date={PUBDATE} publishUrl={conf.url + publishUrl} />
+        {/* {tags && tagSlugs && <Tags tags={tags} tagSlugs={tagSlugs} />} */}
         <Author />
       </div>
 
