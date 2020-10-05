@@ -125,7 +125,14 @@ const getArticles = (array) => {
                              pod6content.push("\n");
                 },
                 'code:block':( writer, processor ) => ( node, ctx, interator ) => {
-                    pod6content.push("=begin code\n")
+                    let attrs =''
+                    if (node.config && node.config.length) {
+                        const attr = makeAttrs(node, ctx)
+                         Object.keys(attr.asHash()).map( name => {
+                             attrs += ` :${name}[${attr.getAllValues(name).join('')}]`
+                         })
+                    }
+                    pod6content.push(`=begin code ${attrs}\n`)
                     interator(node.content, ctx)
                     pod6content.push("=end code\n")
                 }, 
