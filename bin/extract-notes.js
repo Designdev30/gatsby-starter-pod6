@@ -113,6 +113,7 @@ const getArticles = (array) => {
         const articleContent = array.slice(array.indexOf(nodePublished)+1,lastIndexOfArticleNode)
         if (articleContent.length) {
             let pod6content = []
+            let Description = ''
             toAny().use({
                 '*': ( writer, processor ) => ( node, ctx, interator ) => {
                     console.error(log(node))
@@ -132,6 +133,8 @@ const getArticles = (array) => {
                         interator(node.content, ctx)
                 },
                 ':para': ()=>(node, ctx, interator)=>{
+                    // save first para as DECRIPTION
+                    if (!Description) Description = node.text
                     pod6content.push(node.text)
                 },
                 'para:block': ()=>(node, ctx, interator)=>{
@@ -161,6 +164,9 @@ const getArticles = (array) => {
             
             const article =`=begin pod :type('post') :pubdate('${makeAttrs(nodePublished,{}).getFirstValue('pubdate')}')
 =TITLE ${nodePublished.content[0].text}
+=begin DESCRIPTION
+${Description}
+=end DESCRIPION
 ${pod6content.join('')}
 =end pod`;
             articles.push(article)
