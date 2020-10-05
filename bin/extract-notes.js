@@ -124,9 +124,22 @@ const getArticles = (array) => {
                 ':blankline':( writer, processor ) => ( node, ctx, interator ) => {
                              pod6content.push("\n");
                 },
+                'code:block':( writer, processor ) => ( node, ctx, interator ) => {
+                    pod6content.push("=begin code\n")
+                    interator(node.content, ctx)
+                    pod6content.push("=end code\n")
+                }, 
                 ':text':( writer, processor ) => ( node, ctx, interator ) => {
-                    pod6content.push(`${node.value}\n`);
-       },
+                    pod6content.push(`${node.value}`);
+                },
+                ':verbatim':( writer, processor ) => ( node, ctx, interator ) => {
+                    pod6content.push(`${node.value}`);
+                },
+                'B<>': ( writer, processor ) => ( node, ctx, interator ) => {
+                    pod6content.push("B<")
+                    interator(node.content, ctx)
+                    pod6content.push(">")
+                },
                 'head:block': ()=>(node, ctx, interator)=>{
                         const level = nodePublished.level > 1 ? 1+ (node.level - nodePublished.level ): nodePublished.level
                         pod6content.push(`=head${level}\n`)
@@ -166,7 +179,7 @@ const getArticles = (array) => {
 =TITLE ${nodePublished.content[0].text}
 =begin DESCRIPTION
 ${Description}
-=end DESCRIPION
+=end DESCRIPTION
 ${pod6content.join('')}
 =end pod`;
             articles.push(article)
