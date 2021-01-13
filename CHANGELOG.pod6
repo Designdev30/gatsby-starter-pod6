@@ -1,0 +1,14 @@
+=begin pod
+=head2 Upcoming features
+
+=head2 Releases list
+
+=head3 0.1.4
+=item [rss] remove link from description 
+
+=head3 0.1.3
+=item process pod6 files
+
+=head3 Initial release 
+
+=end pod 

@@ -24,7 +24,7 @@ ${pages
         <pubDate>${new Date(post.PUBDATE).toUTCString()}</pubDate>
         <description><![CDATA[
           <p>${post.DESCR}
-          <a href="${conf.url}${post.publishUrl}">&nearr;</a></p>
+          </p>
         ]]></description>
       </item>`
   )
