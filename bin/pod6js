@@ -136,7 +136,10 @@ util.inherits(WriterReact, writerHtml)
  finalExporter = toHtml({writer:WriterReact}).use({
     ...handlersHtml,
     'DESCRIPTION':( writer, processor ) => ( node, ctx, interator ) => {
-    const r = toHtml().use({...handlersHtml}).run(node.content)
+    const r = toHtml().use({
+        ...handlersHtml,
+        ':text':processText
+    }).run(node.content)
     DATA.DESCR = r.toString()
     },
     'Image:namedBlock': ( writer, processor ) => ( node, ctx, interator ) => {

@@ -4,6 +4,7 @@
 =head2 Releases list
 
 =head3 0.1.4
+=item [rss] clean newlines from description
 =item [rss] remove link from description 
 
 =head3 0.1.3
