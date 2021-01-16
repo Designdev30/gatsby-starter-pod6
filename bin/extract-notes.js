@@ -16,8 +16,8 @@ program
     .parse(process.argv)
 
 
-const toAny = require('pod6/src/exportAny')
-const {makeAttrs} = require('pod6/src/helpers/config')
+const toAny = require('pod6/built/exportAny').default
+const makeAttrs = require('pod6/built/helpers/config').default
 const {parse} = require('pod6')
 let filename =  program.file
 console.log(`Start processing ${filename}`)

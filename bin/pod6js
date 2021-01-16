@@ -9,9 +9,9 @@ const log = (a) => JSON.stringify(a,null,2)
 const argv = require('yargs').argv
 const fs = require('fs')
 const path = require('path')
-const makeAttrs = require('pod6/src/helpers/config').makeAttrs
-// const wrapContent = require('pod6/src/helpers/handlers').wrapContent
-const { subUse, setFn, wrapContent } = require('pod6/src/helpers/handlers')
+const makeAttrs = require('pod6/built/helpers/config').default
+// const wrapContent = require('pod6/built/helpers/handlers').wrapContent
+const { subUse, setFn, wrapContent } = require('pod6/built/helpers/handlers')
 
 
 let filename = process.argv[2]
@@ -121,7 +121,7 @@ const handlersHtml = {
     writer.writeRaw(' />') // close Video tag
 },
 }
-const writerHtml = require('pod6/src/writerHtml')
+const writerHtml = require('pod6/built/writerHtml').default
 function WriterReact(){
     writerHtml.apply(this, arguments)
     // escape function for output

@@ -3,6 +3,9 @@
 
 =head2 Releases list
 
+=head3 0.1.5
+=item update pod6 lib to v0.0.30
+
 =head3 0.1.4
 =item [rss] clean newlines from description
 =item [rss] remove link from description 
