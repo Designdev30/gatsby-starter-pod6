@@ -2,7 +2,7 @@
   "name": "gatsby-starter-pod6",
   "private": true,
   "description": "A simple starter to get up and developing quickly with Gatsby",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": "Alex Zahatski <me.send@zag.ru>",
   "dependencies": {
     "autoprefixer": "^9.7.3",
@@ -33,7 +33,7 @@
     "gatsby-plugin-google-gtag": "^1.1.17",
     "iso_9": "^1.0.4",
     "newbase60": "^1.3.1",
-    "pod6": "0.0.30",
+    "pod6": "0.0.31",
     "prettier": "^1.19.1",
     "yargs": "^15.3.1"
   },
