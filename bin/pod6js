@@ -70,7 +70,7 @@ const handlersHtml = {
 
 
 
-'ImageBlock:namedBlock': ( writer, processor ) => ( node, ctx, interator ) =>{
+'ImageBlock': ( writer, processor ) => ( node, ctx, interator ) =>{
     // get image addr
     const addr = node.content[0].value
     const reg = new RegExp(/\s*(\w+\.\w+)\s+(.+)/g)
@@ -82,7 +82,7 @@ const handlersHtml = {
             interator( processor(`=for Image\n${filename}`), ctx)
     }
 },
-'Image:namedBlock' : ( writer, processor ) => ( node, ctx, interator ) =>{
+'Image' : ( writer, processor ) => ( node, ctx, interator ) =>{
     // get image addr
     const addr = node.content[0].value
     if ( addr ) {
@@ -98,11 +98,11 @@ const handlersHtml = {
    
 },
 // =Html 
-'Html:namedBlock' : ( writer, processor ) => ( node, ctx, interator ) =>{
+'Html' : ( writer, processor ) => ( node, ctx, interator ) =>{
     const html = node.content[0].value.replace(/\n/g,'')
     writer.writeRaw(`<div  dangerouslySetInnerHTML={{ __html:\`${html}\`}} />`)
 },
-'Video:namedBlock': ( writer, processor ) => ( node, ctx, interator ) =>{ 
+'Video': ( writer, processor ) => ( node, ctx, interator ) =>{ 
     // collect attributes
     //set Flag if Video component exists
     DATA.isVideoExists = true
@@ -142,7 +142,7 @@ util.inherits(WriterReact, writerHtml)
     }).run(node.content)
     DATA.DESCR = r.toString()
     },
-    'Image:namedBlock': ( writer, processor ) => ( node, ctx, interator ) => {
+    'Image': ( writer, processor ) => ( node, ctx, interator ) => {
         // console.log(log(node.content))
         // get image addr
         const addr = node.content[0].value

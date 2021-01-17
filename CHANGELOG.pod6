@@ -2,6 +2,8 @@
 =head2 Upcoming features
 
 =head2 Releases list
+=head3 0.1.7
+=item adopt api changes for pod6@v0.0.31
 =head3 0.1.6
 =item update pod6 lib to v0.0.31
 =head3 0.1.5
